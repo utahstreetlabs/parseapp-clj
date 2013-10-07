@@ -3,9 +3,16 @@
             [clojure.data.json :as json])
   (:import java.net.URLEncoder))
 
-(defn query [app class query]
-  (-> (rest/GET app (str "/classes/"class"?where="
-                         (URLEncoder/encode (json/write-str query))))
+(defn get-result [response count?]
+  (if count?
+    (:count response)
+    (:results response)))
+
+(defn query [app class query & {:keys [limit skip count] :or {limit 100 skip 0 count false}}]
+  (prn (json/write-str query))
+  (-> (rest/GET app (str "/classes/"class
+                         "?where="(URLEncoder/encode (json/write-str query))
+                         "&limit="limit"&skip="skip"&count="(if count 1 0)))
       :body
       (json/read-str :key-fn keyword)
-      :results))
+      (get-result count)))
