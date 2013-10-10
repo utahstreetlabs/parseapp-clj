@@ -3,9 +3,6 @@
             [clj-http.client :as http]))
 
 
-(defn set-default-headers [request default-headers]
-  (update-in request [:headers] (fn [request-headers] (merge default-headers request-headers))))
-
 (defn make-request [app path & [request]]
   (-> request
       (assoc :url (str "https://api.parse.com/1" path))
@@ -15,10 +12,13 @@
 (defn GET [app path & [request]]
   (http/request (assoc (make-request app path request) :method :get)))
 
-(defn POST [app path body & [request]]
-  (http/request (-> (make-request app path request)
-                    (assoc :method :post :body body)
-                    (set-default-headers {"Content-Type" "application/json"}))))
+(defn POST [app path & [request]]
+  (prn (-> {:content-type :json}
+                    (merge (make-request app path request))
+                    (assoc :method :post)))
+  (http/request (-> {:content-type :json}
+                    (merge (make-request app path request))
+                    (assoc :method :post))))
 
 (defn DELETE [app path & [request]]
   (http/request (assoc (make-request app path request) :method :delete)))
