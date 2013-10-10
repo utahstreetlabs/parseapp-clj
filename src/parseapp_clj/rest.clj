@@ -13,9 +13,6 @@
   (http/request (assoc (make-request app path request) :method :get)))
 
 (defn POST [app path & [request]]
-  (prn (-> {:content-type :json}
-                    (merge (make-request app path request))
-                    (assoc :method :post)))
   (http/request (-> {:content-type :json}
                     (merge (make-request app path request))
                     (assoc :method :post))))
