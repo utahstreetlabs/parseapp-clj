@@ -1,4 +1,4 @@
-(defproject parseapp-clj "0.2.0-SNAPSHOT"
+(defproject parseapp-clj "0.2.0"
   :description "A Clojure library for the Parse REST API"
   :url ""
   :license {:name "Eclipse Public License"
