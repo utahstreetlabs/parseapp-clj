@@ -1,4 +1,4 @@
-(ns parseapp-clj.query
+(ns parseapp-clj.core
   (:require [parseapp-clj.rest :as rest]
             [clojure.data.json :as json])
   (:import java.net.URLEncoder))
@@ -15,3 +15,7 @@
       :body
       (json/read-str :key-fn keyword)
       (get-result count)))
+
+(defn create [app type object]
+  (rest/POST app (str "/classes/"type) {:body (json/write-str object)}))
+
